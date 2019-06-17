@@ -7,6 +7,8 @@ const pokedex = require('./data/pokedex.json');
 const skills = require('./data/skills.json');
 const types = require('./data/types.json');
 
+const APP_URL = 'https://pokemon-json.herokuapp.com';
+
 const buildFolder = path.resolve(__dirname, 'build');
 
 const clean = () =>
@@ -56,9 +58,9 @@ const mapPokedexData = async pokemons => {
     );
 
     return Object.assign({}, pokemon, {
-      image: image && `/images/${image}`,
-      sprite: sprite && `/sprites/${sprite}`,
-      thumbnail: thumbnail && `/thumbnails/${thumbnail}`,
+      image: image && `${APP_URL}/images/${image}`,
+      sprite: sprite && `${APP_URL}/sprites/${sprite}`,
+      thumbnail: thumbnail && `${APP_URL}/thumbnails/${thumbnail}`,
     });
   });
 };
