@@ -1,9 +1,24 @@
 const path = require('path');
 const fs = require('fs-extra');
+const { ncp } = require('ncp');
+const rimraf = require('rimraf');
 const items = require('./data/items.json');
 const pokedex = require('./data/pokedex.json');
 const skills = require('./data/skills.json');
 const types = require('./data/types.json');
+
+const buildFolder = path.resolve(__dirname, 'build');
+
+const clean = () =>
+  new Promise((fulfill, reject) => {
+    rimraf(buildFolder, err => {
+      if (err) {
+        return reject(err);
+      }
+      console.info(`Complete remove build folder.`);
+      fulfill();
+    });
+  });
 
 const writeDb = () =>
   new Promise((fulfill, reject) => {
@@ -26,15 +41,28 @@ const writeDb = () =>
     );
   });
 
-async function generateDb() {
-  try {
-    await fs.ensureDir(path.resolve(__dirname, 'build'));
+const copyAssets = () =>
+  new Promise((fulfill, reject) => {
+    console.info(`Start copying assets...`);
+    ncp('assets', 'build/assets', err => {
+      if (err) {
+        return reject(err);
+      }
+      console.info(`Asset copy completed!`);
+      fulfill();
+    });
+  });
 
+async function build() {
+  try {
+    await clean();
+    await fs.ensureDir(buildFolder);
     await writeDb();
+    await copyAssets();
   } catch (e) {
-    console.error('Error when generateDb');
+    console.error(`Error during build`);
     console.error(e);
   }
 }
 
-generateDb();
+build();
