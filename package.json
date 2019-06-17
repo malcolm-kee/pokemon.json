@@ -4,7 +4,9 @@
   "description": "This repository provides a basic dataset of all Pokemons.",
   "main": "index.js",
   "scripts": {
-    "build": "node build-db.js"
+    "start": "node index.js",
+    "build": "node build-db.js",
+    "heroku-postbuild": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -23,7 +25,11 @@
   },
   "dependencies": {
     "fs-extra": "^8.0.1",
+    "json-server": "^0.15.0",
     "ncp": "^2.0.0",
     "rimraf": "^2.6.3"
+  },
+  "engines": {
+    "node": "8.12.0"
   }
 }
