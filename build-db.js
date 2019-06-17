@@ -7,8 +7,9 @@ const items = require('./data/items.json');
 const pokedex = require('./data/pokedex.json');
 const skills = require('./data/skills.json');
 const types = require('./data/types.json');
+const createHomePage = require('./homepage');
 
-const BASE_URL = process.env.BASE_URL || 'localhost:3000';
+const BASE_URL = process.env.BASE_URL || 'http://localhost:3000';
 
 const buildFolder = path.resolve(__dirname, 'build');
 
@@ -68,21 +69,23 @@ const mapPokedexData = async pokemons => {
 
 const writeDb = pokedex =>
   new Promise((fulfill, reject) => {
+    const db = {
+      pokedex,
+      items,
+      skills,
+      types,
+    };
+
     fs.writeFile(
       path.resolve(__dirname, 'build', 'db.json'),
-      JSON.stringify({
-        pokedex,
-        items,
-        skills,
-        types,
-      }),
+      JSON.stringify(db),
       err => {
         if (err) {
           console.error(`Error writing db`);
           reject(err);
         }
         console.log(`Complete generate db`);
-        fulfill();
+        fulfill(db);
       }
     );
   });
@@ -99,13 +102,34 @@ const copyAssets = () =>
     });
   });
 
+const generateHomePage = db =>
+  new Promise((fulfill, reject) => {
+    const html = createHomePage(
+      Object.keys(db)
+        .map(key => `${BASE_URL}/api/${key}`)
+        .concat(`${BASE_URL}/graphql`)
+    );
+
+    fs.writeFile(
+      path.resolve(__dirname, 'build', 'assets', 'index.html'),
+      html,
+      err => {
+        if (err) {
+          return reject(err);
+        }
+        return fulfill();
+      }
+    );
+  });
+
 async function build() {
   try {
     await clean();
     await fs.ensureDir(buildFolder);
     const pokemons = await mapPokedexData(pokedex);
-    await writeDb(pokemons);
+    const db = await writeDb(pokemons);
     await copyAssets();
+    await generateHomePage(db);
   } catch (e) {
     console.error(`Error during build`);
     console.error(e);
