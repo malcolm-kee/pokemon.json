@@ -1,3 +1,4 @@
+require('dotenv').config();
 const path = require('path');
 const fs = require('fs-extra');
 const { ncp } = require('ncp');
@@ -7,7 +8,7 @@ const pokedex = require('./data/pokedex.json');
 const skills = require('./data/skills.json');
 const types = require('./data/types.json');
 
-const APP_URL = 'https://pokemon-json.herokuapp.com';
+const BASE_URL = process.env.BASE_URL || 'localhost:3000';
 
 const buildFolder = path.resolve(__dirname, 'build');
 
@@ -58,9 +59,9 @@ const mapPokedexData = async pokemons => {
     );
 
     return Object.assign({}, pokemon, {
-      image: image && `${APP_URL}/images/${image}`,
-      sprite: sprite && `${APP_URL}/sprites/${sprite}`,
-      thumbnail: thumbnail && `${APP_URL}/thumbnails/${thumbnail}`,
+      image: image && `${BASE_URL}/images/${image}`,
+      sprite: sprite && `${BASE_URL}/sprites/${sprite}`,
+      thumbnail: thumbnail && `${BASE_URL}/thumbnails/${thumbnail}`,
     });
   });
 };
