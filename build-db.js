@@ -20,13 +20,56 @@ const clean = () =>
     });
   });
 
-const writeDb = () =>
+const getFiles = dir => () =>
+  new Promise((fulfill, reject) => {
+    fs.readdir(path.resolve(__dirname, 'assets', dir), (err, files) => {
+      if (err) {
+        return reject(err);
+      }
+      fulfill(files);
+    });
+  });
+
+const getAllImages = getFiles('images');
+const getAllSprites = getFiles('sprites');
+const getAllThumbnails = getFiles('thumbnails');
+
+const mapPokedexData = async pokemons => {
+  const [images, sprites, thumbnails] = await Promise.all([
+    getAllImages(),
+    getAllSprites(),
+    getAllThumbnails(),
+  ]);
+
+  return pokemons.map(pokemon => {
+    const image = images.find(
+      fileName =>
+        fileName.substring(0, 3) === String(pokemon.id).padStart(3, '0')
+    );
+    const sprite = sprites.find(
+      fileName =>
+        fileName.substring(0, 3) === String(pokemon.id).padStart(3, '0')
+    );
+    const thumbnail = thumbnails.find(
+      fileName =>
+        fileName.substring(0, 3) === String(pokemon.id).padStart(3, '0')
+    );
+
+    return Object.assign({}, pokemon, {
+      image: image && `/images/${image}`,
+      sprite: sprite && `/sprites/${sprite}`,
+      thumbnail: thumbnail && `/thumbnails/${thumbnail}`,
+    });
+  });
+};
+
+const writeDb = pokedex =>
   new Promise((fulfill, reject) => {
     fs.writeFile(
       path.resolve(__dirname, 'build', 'db.json'),
       JSON.stringify({
-        items,
         pokedex,
+        items,
         skills,
         types,
       }),
@@ -57,7 +100,8 @@ async function build() {
   try {
     await clean();
     await fs.ensureDir(buildFolder);
-    await writeDb();
+    const pokemons = await mapPokedexData(pokedex);
+    await writeDb(pokemons);
     await copyAssets();
   } catch (e) {
     console.error(`Error during build`);
