@@ -70,6 +70,12 @@ const mapPokedexData = async pokemons => {
 const writeDb = pokedex =>
   new Promise((fulfill, reject) => {
     const db = {
+      pokemons: pokedex.map(pokemon => ({
+        id: pokemon.id,
+        name: pokemon.name.english,
+        sprite: pokemon.sprite,
+        thumbnail: pokemon.thumbnail,
+      })),
       pokedex,
       items,
       skills,
