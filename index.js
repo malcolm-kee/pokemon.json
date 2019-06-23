@@ -7,7 +7,6 @@ const server = jsonServer.create();
 const router = jsonServer.router(path.join(__dirname, 'build', 'db.json'));
 const middlewares = jsonServer.defaults({
   static: path.join(__dirname, 'build', 'assets'),
-  readOnly: true,
 });
 
 const PORT = process.env.PORT || 3000;
