@@ -3,6 +3,7 @@ const path = require('path');
 const fs = require('fs-extra');
 const { ncp } = require('ncp');
 const rimraf = require('rimraf');
+const characters = require('./data/characters.json');
 const items = require('./data/items.json');
 const pokedex = require('./data/pokedex.json');
 const skills = require('./data/skills.json');
@@ -77,6 +78,7 @@ const writeDb = pokedex =>
         thumbnail: pokemon.thumbnail,
       })),
       pokedex,
+      characters,
       items,
       skills,
       types,

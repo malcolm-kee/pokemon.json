@@ -1,0 +1,52 @@
+[
+  {
+    "id": 1,
+    "name": "Ash Ketchum",
+    "image": "https://upload.wikimedia.org/wikipedia/en/0/09/AshXYanime.png"
+  },
+  {
+    "id": 2,
+    "name": "Misty",
+    "image": "https://upload.wikimedia.org/wikipedia/en/b/b1/MistyEP.png"
+  },
+  {
+    "id": 3,
+    "name": "Brock",
+    "image": "https://upload.wikimedia.org/wikipedia/en/7/71/DP-Brock.png"
+  },
+  {
+    "id": 4,
+    "name": "Jessie",
+    "image": "https://cdn.bulbagarden.net/upload/7/7d/Jessie_SM.png"
+  },
+  {
+    "id": 5,
+    "name": "James",
+    "image": "https://cdn.bulbagarden.net/upload/2/2f/James_SM.png"
+  },
+  {
+    "id": 6,
+    "name": "Meowth",
+    "image": "https://cdn.bulbagarden.net/upload/d/d6/052Meowth.png"
+  },
+  {
+    "id": 7,
+    "name": "Tracey Sketchit",
+    "image": "https://cdn.bulbagarden.net/upload/d/d9/Tracey_Sketchit_BW.png"
+  },
+  {
+    "id": 8,
+    "name": "May",
+    "image": "https://cdn.bulbagarden.net/upload/a/a9/May_DP_series.png"
+  },
+  {
+    "id": 9,
+    "name": "Max",
+    "image": "https://cdn.bulbagarden.net/upload/d/d7/MaxAG.png"
+  },
+  {
+    "id": 10,
+    "name": "Dawn",
+    "image": "https://cdn.bulbagarden.net/upload/b/b2/Dawn_BW2.png"
+  }
+]
